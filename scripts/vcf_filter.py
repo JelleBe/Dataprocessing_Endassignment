@@ -14,7 +14,7 @@ class VcfFilter:
         self.depth = depth
         self.output = output
 
-    def quality_filter(self):
+    def filter_by_quality(self):
         message = ""
         with open(self.output, 'w') as new_file:
             for line in self.vcf_file:
@@ -22,17 +22,17 @@ class VcfFilter:
                     new_file.write(line)
                 try:
                     if not line.startswith('#'):
-                        if int(line.split('\t')[5]) <= int(self.quality):
+                        variant_quality =  float(line.split('\t')[5])
+                        if variant_quality >= int(self.quality):
                             new_file.write(line)
                 except ValueError:
                     return 0
                 except TypeError:
                     message += "fill in the -q"
             if message != "":
-                print(message)
-            new_file.close()
+                new_file.close()
 
-    def depth_filter(self):
+    def filter_by_depth(self):
         with open(self.output, 'w') as new_file:
             for line in self.vcf_file:
                 if line.startswith("#"):
@@ -40,7 +40,7 @@ class VcfFilter:
 
                 if not line.startswith('#'):
                     match = re.search("(DP=)(\d+)", str(line.split('\t')[7]))
-                    if int(match.group(2)) > int(self.depth):
+                    if int(match.group(2)) >= int(self.depth):
                         new_file.write(line)
             new_file.close()
 
@@ -85,9 +85,9 @@ def main(args):
     if method == "decompose":
         run.decomposer_filter()
     if method == "quality":
-        run.quality_filter()
+        run.filter_by_quality()
     if method == "depth":
-        run.depth_filter()
+        run.filter_by_depth()
 
     return 0
 
