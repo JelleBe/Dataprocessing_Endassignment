@@ -2,6 +2,8 @@
 
 This pipeline is an automated BASH/R pipelinem, made in snakemake, for the efficient visualization of RNA-seq variants on the mouse mm10 build. The pipeline takes as input BAM files from RNA-Seq, WES or WGS, calls variants in each sample with Freebayes, intersects variants from each genotype and outputs filtered VCF files per genotype, genome-wide plots of variants. For this pipeline to work, it is required that a virtual python enviroment is setup and that snakemake is installed in that virtual enviroment. Inputs could be BAM files from a splice-aware aligner like HISAT2, Bowtie2, or BWA (for WES/WGS data).
 
+The reference pipeline can be found [here](https://github.com/cfarkas/Genotype-variants)
+
 ## Overview of the pipeline
 
 ![overview](dag.png)
